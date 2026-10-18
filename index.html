@@ -49,7 +49,7 @@ footer{font-size:11px}
 <button data-value="4">4</button><button data-value="5">5</button><button data-value="6">6</button><button data-action="clear">Clear</button>
 <button data-value="1">1</button><button data-value="2">2</button><button data-value="3">3</button><button data-value="×" aria-label="Multiply">×</button>
 <button data-value="0">0</button><button data-value="-" aria-label="Negative sign">−</button><button class="equals" data-action="calculate" aria-label="Calculate">=</button><button data-value="+" aria-label="Add" class="add-key">+</button></div></section>
-<section class="scene-card" aria-label="Multiplication visualization"><div class="scene-heading"><span id="scene-expression">6 groups of 3</span><span><button id="zoom-in" aria-label="Zoom in">＋</button> <button id="zoom-out" aria-label="Zoom out">−</button> <button id="zoom-fit">Overview</button> <button id="zoom-readable">Readable</button> <button id="hundreds-toggle" disabled aria-pressed="false">Outline hundreds</button> <button id="replay" type="button">Replay</button></span></div>
+<section class="scene-card" aria-label="Multiplication visualization"><div class="scene-heading"><span id="scene-expression">6 groups of 3</span><span><button id="zoom-in" aria-label="Zoom in">＋</button> <button id="zoom-out" aria-label="Zoom out">−</button> <button id="zoom-fit">Overview</button> <button id="zoom-readable">Readable</button> <button id="hundreds-toggle" disabled aria-pressed="false">Outline hundreds</button> <button id="random-expression" type="button">Random expression</button> <button id="replay" type="button">Replay</button></span></div>
 <div id="scene-viewport" tabindex="0" aria-label="Scrollable array workspace"><svg id="scene" viewBox="0 0 1000 500" role="img" aria-labelledby="scene-title scene-description"><title id="scene-title">Six groups of three</title><desc id="scene-description">Six numbered looped groups of three positive counters appear and move into six rows. The result is eighteen.</desc><defs><linearGradient id="positive-disk" x1="0" y1="0" x2="0.65" y2="1"><stop offset="0" stop-color="#6cb9ed"/><stop offset=".16" stop-color="#247ebc"/><stop offset="1" stop-color="#1a6ba7"/></linearGradient><linearGradient id="negative-disk" x1="0" y1="0" x2="0.65" y2="1"><stop offset="0" stop-color="#f49b87"/><stop offset=".16" stop-color="#cd5142"/><stop offset="1" stop-color="#b83b32"/></linearGradient></defs><g id="groups"></g><g id="array-frame"></g><g id="wrapper" opacity="0" aria-hidden="true"><rect id="wave-band" x="-38" y="10" width="76" height="465" rx="25" fill="#536b82" opacity=".12"/><path d="M 0 12 V 473" stroke="#536b82" stroke-width="2" opacity=".45"/><text x="0" y="35" text-anchor="middle" fill="#334e64" font-size="28">−</text></g><text id="empty" x="500" y="250" text-anchor="middle">Press Enter to calculate</text></svg></div><p id="array-help">Every square is one unit. Larger arrays scroll; use Overview to see the whole structure.</p></section>
 <footer>Type a multiplication and press Enter · Escape clears <label><input id="reduced" type="checkbox"> Reduce motion</label></footer></main>
 <script>window.VMC=window.VMC||{};
@@ -594,4 +594,23 @@ requestAnimationFrame(()=>input.focus());
  viewport.addEventListener('pointermove',e=>{if(drag){viewport.scrollLeft=drag.left+drag.x-e.clientX;viewport.scrollTop=drag.top+drag.y-e.clientY;}});
  viewport.addEventListener('pointerup',()=>drag=null);viewport.addEventListener('pointercancel',()=>drag=null);
 })();
+</script><script>
+VMC.randomExpression=function(previous){
+ const integer=(min,max)=>min+Math.floor(Math.random()*(max-min+1));
+ const signed=n=>Math.random()<.35?-n:n;
+ let expression='';
+ for(let attempt=0;attempt<20;attempt++){
+  const kind=Math.random();
+  if(kind<.45)expression=VMC.formatExpression([signed(integer(2,12)),signed(integer(2,12))]);
+  else if(kind<.70)expression=VMC.formatExpression([signed(integer(2,8)),signed(integer(13,40))]);
+  else if(kind<.85)expression=VMC.formatExpression([signed(integer(2,6)),signed(integer(2,6)),signed(integer(2,5))]);
+  else expression=String(signed(integer(5,60)))+' + '+VMC.formatFactor(signed(integer(2,40)));
+  if(expression!==previous)return expression;
+ }
+ return previous==='6 × 3'?'7 × 4':'6 × 3';
+};
+
+document.querySelector('#random-expression').addEventListener('click',()=>{
+ const next=VMC.randomExpression(input.value);clearAll();input.value=next;calculate();
+});
 </script></body></html>
