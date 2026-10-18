@@ -28,6 +28,19 @@
 #place-inspector{border:1px solid #cbd7e0;border-radius:16px;max-width:min(90vw,480px);padding:24px;color:#243f53}#place-inspector::backdrop{background:#132e4b88}#inspect-title{font-size:20px}#inspect-grid{display:block;width:100%;max-height:55vh;margin:20px 0}[data-place-value]{cursor:pointer}[data-place-value]:focus{outline:none;filter:brightness(1.25)}.app{max-width:none}#zoom-in,#zoom-out,#zoom-fit{font-size:12px}
 
 #scene-viewport{overflow:auto;flex:1;min-height:300px;max-height:calc(100dvh - 290px);width:100%;cursor:grab;touch-action:pan-x pan-y;border-radius:6px;background:#fff}#scene-viewport:active{cursor:grabbing}#scene{min-width:100%}.scene-heading{flex-wrap:wrap}.scene-heading>span:last-child{display:flex;gap:5px;flex-wrap:wrap}#array-help{font-size:12px;color:#566775;margin:7px 0 0}.app{height:100dvh;min-height:650px}.scene-card{min-height:350px}#zoom-readable,#hundreds-toggle{font-size:12px}@media(max-width:650px){.app{height:auto}#scene-viewport{max-height:65dvh;min-height:350px}}
+</style><style>
+/* Fit the app to the actual viewport; scroll arrays inside their own panel. */
+html,body{width:100%;height:100%;min-height:0;overflow:hidden}
+.app{width:100%;height:100vh;height:100dvh;min-height:0;max-width:none;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:clamp(6px,1.3vh,14px);padding:clamp(8px,1.8vh,20px) clamp(10px,2vw,24px);overflow:hidden}
+header,.calculator,footer{min-width:0}
+.scene-card{min-height:0;min-width:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:6px;overflow:hidden}
+#scene-viewport{height:100%;min-height:0;min-width:0;max-height:none;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+#scene{width:100%;height:100%;min-height:0;max-height:none;min-width:100%;flex:none}
+.scene-heading{min-width:0;gap:6px;align-items:center}
+#array-help{margin:0;font-size:11px}
+footer{font-size:11px}
+@media(max-width:650px){.app{height:100vh;height:100dvh;min-height:0}.scene-card{min-height:0}#scene-viewport{height:100%;min-height:0;max-height:none}header{flex-direction:row;align-items:center}.review{font-size:10px}.calculator{padding:8px;gap:8px}.keypad{grid-template-columns:repeat(4,30px);gap:3px}#expression{font-size:23px}#product{font-size:25px;padding:5px 8px}.scene-heading>span:last-child{gap:3px}.scene-heading button{padding:4px 7px;min-height:26px}.scene-card{padding:8px}}
+@media(max-height:540px){.calculator{padding:6px 12px}.keypad{grid-template-columns:repeat(4,30px);gap:3px}.keypad button{font-size:12px;min-height:23px;padding:2px}#expression{font-size:25px}#product{font-size:27px;padding:4px 8px}#status{margin:0;min-height:14px;font-size:10px}header h1{font-size:18px}.scene-card{padding:6px 10px}.scene-heading button{min-height:24px;padding:3px 7px}#array-help{font-size:10px}}
 </style></head>
 <body><main class="app"><header><h1>Visual Calculator</h1><span class="review">Waterfall v23 · Arrays partitioned by tens</span></header>
 <section class="calculator" aria-label="Multiplication calculator"><div class="readout"><label for="expression">Expression</label><div class="readout-line"><input id="expression" value="6 × 3" type="text" autocomplete="off" spellcheck="false" aria-describedby="status"><output id="product" aria-label="Product" aria-live="polite"></output></div><p id="status" role="status">Enter a multiplication and press Enter.</p></div>
